@@ -1,6 +1,6 @@
 canvas = document.getElementById("canvas");
 var c = canvas.getContext("2d")
-canvas.width = window.innerWidth * 0.7;
+canvas.width = window.innerWidth * 0.6;
 canvas.height = canvas.width / 1.7;
 ball = {
   x: canvas.width/2,
@@ -84,7 +84,7 @@ function updateBall(ball) {
 }
 function updatePlatform(platform){
   platform.x += platform.dx;
-  if (platform.x >= canvas.width || platform.x <= 0){
+  if (platform.x + platform.width >= canvas.width || platform.x <= 0){
     platform.dx = -platform.dx;
   }
 }

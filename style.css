@@ -2,6 +2,7 @@
 	background: white;
 	z-index: 3;
 	margin: auto;
+	margin-top: 2em;
 	display: block;
 	border-radius: 10px;
   }
@@ -15,7 +16,7 @@
   #title {
 	color: white;
 	text-align: center;
-	font-size: 2em;
+	font-size: 5em;
 	padding: 0;
 	margin: 0;
   }
