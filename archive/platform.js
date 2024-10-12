@@ -1,3 +1,4 @@
+// This is kinda glitchy
 canvas = document.getElementById("canvas");
 var c = canvas.getContext("2d")
 canvas.width = window.innerWidth * 0.6;
@@ -12,6 +13,13 @@ ball = {
   radius: 10,
   maxDXorDY: 100
 }
+platform = {
+  x: 150,
+  y: 200,
+  width: 150,
+  height: 400,
+  dx: 3
+}
 function drawBall(ball){
   c.beginPath();
   c.strokeStyle = "black";
@@ -20,8 +28,27 @@ function drawBall(ball){
   c.stroke();
   c.closePath();
 }
+function drawPlatform(platform){
+  c.beginPath();
+  c.strokeStyle = "black";
+  c.fillStyle = "black";
+  c.rect(platform.x, platform.y, platform.width, platform.height)
+  c.stroke();
+  c.closePath()
+}
 function updateBall(ball) {
-
+	// Check for collision with the platform
+	if (ball.x + ball.radius >= platform.x &&
+		ball.x - ball.radius <= platform.x + platform.width){
+			ball.dx = -ball.dx * ball.bounciness; // Reverse and apply bounciness
+		}
+	if (ball.y + ball.radius >= platform.y && // Bottom of the ball is below the top of the platform
+		platform.y + platform.height >= ball.y &&
+		ball.x + ball.radius >= platform.x &&
+		ball.x - ball.radius <= platform.x + platform.width) { // Top of the ball is above the bottom of the platform
+		ball.dy = -ball.dy * ball.bounciness; // Reverse and apply bounciness
+	}
+  
 	// Check for collision with the canvas edges
 	if (ball.x >= canvas.width || ball.x <= 0) {
 	  ball.dx = -ball.dx * ball.bounciness; // Reverse direction on horizontal edges
@@ -48,10 +75,18 @@ function updateBall(ball) {
 	}
   }
 
+function updatePlatform(platform){
+  platform.x += platform.dx;
+  if (platform.x + platform.width >= canvas.width || platform.x <= 0){
+    platform.dx = -platform.dx;
+  }
+}
 function draw(){
   c.clearRect(0, 0, canvas.width, canvas.height);
   updateBall(ball)
   drawBall(ball)
+  updatePlatform(platform)
+  drawPlatform(platform)
   myDraw = requestAnimationFrame(draw)
 }
 draw();
