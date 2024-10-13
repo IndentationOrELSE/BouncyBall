@@ -70,8 +70,15 @@ function resizeCanvas() {
     canvas.height = canvas.width / 1.7;
 }
 
+/**
+ * Plots a graph of the ball's speed over time.
+ *
+ * @param {Array<Number>} xArray an array of frame numbers
+ * @param {Array<Number>} yArray an array of corresponding speeds
+ */
+
 function plotIt(xArray, yArray) {
-    const data = [{
+	const data = [{
         x: xArray,
         y: yArray,
         type: "scatter",
@@ -88,6 +95,10 @@ function plotIt(xArray, yArray) {
 }
 
 function updatePlot(xArray, yArray) {
+	if (xArray.length > 500) {
+		xArray.shift();
+		yArray.shift();
+	}
     Plotly.update("thePlot", {
         x: [xArray],
         y: [yArray]
