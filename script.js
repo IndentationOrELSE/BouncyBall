@@ -22,6 +22,11 @@ const ball = {
     maxDXorDY: 100,
 };
 
+/**
+ * Draws the ball object on the canvas.
+ *
+ * @param {Object} ball the ball object to draw
+ */
 function drawBall(ball) {
     c.beginPath();
     c.strokeStyle = "black";
@@ -31,6 +36,16 @@ function drawBall(ball) {
     c.closePath();
 }
 
+/**
+ * Updates the position of the ball object based on its current velocity, and checks for collision with the canvas edges.
+ *
+ * If the ball hits an edge, it reverses its direction and reduces its speed by the bounciness factor.
+ * If the ball hits the top or bottom edge, it also changes its y velocity slightly to simulate gravity.
+ *
+ * The function also updates a display element to show whether the simulation is still working, and stores the ball's speed over time in two arrays for later plotting.
+ *
+ * @param {Object} ball the ball object to update
+ */
 function updateBall(ball) {
     // Check for collision with the canvas edges
     if (ball.x >= canvas.width - ball.radius || ball.x <= ball.radius) {
@@ -62,9 +77,12 @@ function updateBall(ball) {
 
     // Store data for plotting
     xArray.push(frames);
-    yArray.push(Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy)); // Calculate speed
+    yArray.push(Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy)) // Calculate speed
 }
 
+/**
+ * Resizes the canvas to fit 60% of the window's width and height proportional to that width.
+ */
 function resizeCanvas() {
     canvas.width = window.innerWidth * 0.6;
     canvas.height = canvas.width / 1.7;
@@ -94,8 +112,16 @@ function plotIt(xArray, yArray) {
     Plotly.newPlot("thePlot", data, layout);
 }
 
+/**
+ * Updates the plot of the ball's speed over time.
+ *
+ * If the array of speeds is longer than 400 elements, it removes the oldest element.
+ *
+ * @param {Array<Number>} xArray an array of frame numbers
+ * @param {Array<Number>} yArray an array of corresponding speeds
+ */
 function updatePlot(xArray, yArray) {
-	if (xArray.length > 500) {
+	if (xArray.length > 300) {
 		xArray.shift();
 		yArray.shift();
 	}
@@ -107,6 +133,9 @@ function updatePlot(xArray, yArray) {
 
 let myDraw;
 
+/**
+ * Main loop function. Resizes the canvas if necessary, clears the canvas, updates and draws the ball, and updates or creates a plot of the ball's speed over time.
+ */
 function draw() {
     resizeCanvas();
     c.clearRect(0, 0, canvas.width, canvas.height);
